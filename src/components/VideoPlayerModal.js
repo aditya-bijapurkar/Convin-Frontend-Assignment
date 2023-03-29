@@ -4,9 +4,20 @@ import Modal from "react-modal";
 import "react-bootstrap";
 
 Modal.setAppElement("#root");
-const VideoPlayerModal = ({ url, rePlay }) => {
-  let dummy = "https://www.youtube.com/embed/";
-  let id = url.slice(32);
+const VideoPlayerModal = ({ url, rePlay, videoName }) => {
+  const dummy = "https://www.youtube.com/embed/";
+  const paramIndex = url.indexOf("&");
+  const mobileLinkIndex = url.indexOf("watch?v");
+
+  let id;
+  if (mobileLinkIndex === -1) {
+    id = url.slice(17);
+  } else if (paramIndex === -1) {
+    id = url.slice(32);
+  } else {
+    id = url.slice(32, paramIndex);
+  }
+
   let link = dummy.concat(id);
 
   const time = new Date();
@@ -17,16 +28,23 @@ const VideoPlayerModal = ({ url, rePlay }) => {
   return (
     <div className="Temp">
       <Modal isOpen={modalOpen} onRequestClose={() => setModalOpen(false)}>
+        <h5>Playing: {videoName}</h5>
         <iframe
-          width="1410"
-          height="600"
+          width="1000"
+          height="550"
           src={link}
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
         ></iframe>
+        <br />
         <button
+          style={{
+            marginLeft: "450px",
+            backgroundColor: "red",
+            color: "white",
+          }}
           onClick={() => {
             setModalOpen(false);
             rePlay(false);

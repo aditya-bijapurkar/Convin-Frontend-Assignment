@@ -6,11 +6,9 @@ import CardInfoList from "../components/CardInfoList";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Editcard from "../components/EditCard";
 import WatchHistory from "../components/WatchHistory";
-import VideoPlayerModal from "../components/VideoPlayerModal";
 
 const AppRouter = () => {
   const [cards, setCards] = useLocalStorage("cards", []);
-  const [past, setPast] = useLocalStorage("past", []);
 
   return (
     <BrowserRouter>
@@ -38,10 +36,8 @@ const AppRouter = () => {
               path="/edit/:id"
             />
             <Route
-              render={(props) => (
-                <WatchHistory {...props} past={past} setPast={setPast} />
-              )}
-              path="/past"
+              render={(props) => <WatchHistory {...props} />}
+              path="/history"
             />
             <Route component={() => <Redirect to="/" />} />
           </Switch>
